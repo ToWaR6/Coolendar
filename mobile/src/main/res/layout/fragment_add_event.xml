@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,21 +23,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ven. 21 sept 2018" />
+            android:layout_weight="80"
+            android:textSize="15sp"
+            android:layout_gravity="start"/>
 
         <TextView
-            android:id="@+id/time_picker"
+            android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TEST"
+            android:textSize="15sp"
+            android:layout_weight="20"
+            android:layout_gravity="end"
             />
     </LinearLayout>
 </LinearLayout>
