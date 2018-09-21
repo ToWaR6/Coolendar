@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type_event_array">
+        <item>@string/birthday</item>
+        <item>@string/meeting</item>
+        <item>@string/sport</item>
+        <item>@string/others</item>
+    </string-array>
+</resources>

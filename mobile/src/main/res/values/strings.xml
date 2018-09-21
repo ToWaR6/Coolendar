@@ -3,5 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_add_event">Add Event</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_event">Title : </string>
+    <string name="title_event">"Title "</string>
+    <string name="saveButton">Save</string>
+    <string name="birthday">Birthday</string>
+    <string name="meeting">Meeting</string>
+    <string name="others">Others</string>
+    <string name="sport">Sport</string>
+    <string name="note">Note</string>
 </resources>

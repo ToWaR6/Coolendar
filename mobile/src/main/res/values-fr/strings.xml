@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coolendar</string>
+    <string name="title_home">Accueil</string>
+    <string name="title_add_event">Ajouter</string>
+    <string name="title_event">Titre</string>
+    <string name="saveButton">Enregistrer</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="birthday">Anniversaire</string>
+    <string name="meeting">Rendez-vous</string>
+    <string name="others">Autres</string>
+    <string name="sport">Sport</string>
+    <string name="note">Note</string>
+</resources>

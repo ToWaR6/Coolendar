@@ -1,31 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
-
-    <android.support.constraint.ConstraintLayout
+    android:orientation="vertical">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#6200EE">
+        android:background="@color/colorPrimary"
+        android:paddingBottom="15dp"
+        android:layout_marginBottom="10dp">
+        <RelativeLayout
+            android:id="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/cancelButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="10dp"
+                android:text="X"
+                android:background="@drawable/ic_close_black_24dp"
+                android:backgroundTint="@android:color/white"
+                android:textColor="@android:color/white"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_alignParentLeft="true" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saveButton"
+                android:textSize="15sp"
+                android:textColor="@android:color/white"
+                android:layout_alignParentRight="true"
+                style="?android:attr/borderlessButtonStyle"/>
+        </RelativeLayout>
         <EditText
+            android:layout_marginStart="20dp"
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:background="@android:color/transparent"
             android:ems="10"
             android:hint="@string/title_event"
-            android:inputType="textPersonName" />
+            android:layout_below="@+id/buttons"/>
 
 
-    </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp">
-
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            app:srcCompat="@drawable/ic_access_time_black_24dp"
+            android:tint="@android:color/darker_gray"/>
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
@@ -39,8 +78,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:layout_weight="20"
+            android:layout_weight="10"
             android:layout_gravity="end"
             />
     </LinearLayout>
+    <View style="@style/Divider"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            app:srcCompat="@drawable/ic_event_available_black_24dp"
+            android:tint="@android:color/darker_gray"
+            android:layout_gravity="start"
+            android:layout_marginLeft="8dp"/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:textSize="15sp"
+            android:drawSelectorOnTop="true"
+            android:layout_gravity="end"
+            android:entries="@array/type_event_array"/>
+    </LinearLayout>
+    <View style="@style/Divider"/>
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ems="10"
+        android:hint="@string/note"
+        android:gravity="top"
+        android:inputType="textCapSentences|textMultiLine"
+        android:maxLines="4" />
+
 </LinearLayout>
