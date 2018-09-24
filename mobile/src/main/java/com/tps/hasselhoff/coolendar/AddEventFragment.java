@@ -4,7 +4,9 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -107,25 +109,24 @@ public class AddEventFragment extends Fragment {
     }
 
     public void saveEvent() {
+        long endTime = date.getTimeInMillis() + 900000; //Ajoute 15 minutes
         ContentResolver cr = getActivity().getContentResolver();
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.CALENDAR_ID, 3);
         values.put(CalendarContract.Events.DTSTART, date.getTimeInMillis());
-        values.put(CalendarContract.Events.DTEND, date.getTimeInMillis());
+        values.put(CalendarContract.Events.DTEND, endTime);
         values.put(CalendarContract.Events.TITLE, titleEditText.getText().toString());
-
         values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
         values.put(CalendarContract.Events.DESCRIPTION, descriptionEditText.getText().toString());
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+            cr.insert(CalendarContract.Events.CONTENT_URI, values);
         }else{
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.WRITE_CALENDAR},
                     REQUEST_CALENDAR);
         }
-
         closeFragment();
     }
 
