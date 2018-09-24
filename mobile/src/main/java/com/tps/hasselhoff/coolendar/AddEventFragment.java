@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -118,15 +119,12 @@ public class AddEventFragment extends Fragment {
         ContentResolver cr = getActivity().getContentResolver();
         ContentValues values = new ContentValues();
         String title = "["+spinner.getSelectedItem().toString()+"] "+titleEditText.getText().toString();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            values.put(CalendarContract.Events.CALENDAR_ID, 3);
-        }else{
-            values.put(CalendarContract.Events.CALENDAR_ID, 1);
-        }
+        values.put(CalendarContract.Events.CALENDAR_ID, 1);
+
         values.put(CalendarContract.Events.DTSTART, date.getTimeInMillis());
         values.put(CalendarContract.Events.DTEND, endTime);
         values.put(CalendarContract.Events.TITLE, title);
-        values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
         values.put(CalendarContract.Events.DESCRIPTION, descriptionEditText.getText().toString());
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
@@ -137,6 +135,7 @@ public class AddEventFragment extends Fragment {
                     Manifest.permission.WRITE_CALENDAR},
                     REQUEST_CALENDAR);
         }
+
         closeFragment();
     }
 
