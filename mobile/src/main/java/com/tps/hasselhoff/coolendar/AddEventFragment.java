@@ -61,7 +61,8 @@ public class AddEventFragment extends Fragment {
         final TimePickerDialog timePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                date.set(Calendar.HOUR, selectedHour);
+                timePicker.getHour();
+                date.set(Calendar.HOUR_OF_DAY, selectedHour);
                 date.set(Calendar.MINUTE, selectedMinute);
                 myTime.setText(simpleTimeFormat.format(date.getTime()));
             }
