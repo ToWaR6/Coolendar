@@ -16,17 +16,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
+            <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_margin="10dp"
-                android:text="X"
+                android:layout_margin="11dp"
                 android:background="@drawable/ic_close_black_24dp"
                 android:backgroundTint="@android:color/white"
                 android:textColor="@android:color/white"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_alignParentLeft="true" />
+                style="?android:attr/selectableItemBackground"
+                android:layout_alignParentStart="true"/>
 
             <Button
                 android:id="@+id/saveButton"
@@ -35,12 +34,12 @@
                 android:text="@string/saveButton"
                 android:textSize="15sp"
                 android:textColor="@android:color/white"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 style="?android:attr/borderlessButtonStyle"/>
         </RelativeLayout>
         <EditText
             android:layout_marginStart="20dp"
-            android:id="@+id/editText"
+            android:id="@+id/titleEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#FFFFFF"
@@ -108,7 +107,7 @@
     </LinearLayout>
     <View style="@style/Divider"/>
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/descriptionEvent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:ems="10"
