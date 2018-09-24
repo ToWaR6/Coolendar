@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -37,6 +39,7 @@ public class AddEventFragment extends Fragment {
     private Calendar date;
     private EditText titleEditText;
     private EditText descriptionEditText;
+    private Spinner spinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class AddEventFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_add_event, container, false);
         titleEditText = rootView.findViewById(R.id.titleEvent);
         descriptionEditText = rootView.findViewById(R.id.descriptionEvent);
+        spinner = rootView.findViewById(R.id.spinner);
         //Get heure courante
         date = Calendar.getInstance();
         int hour = date.get(Calendar.HOUR_OF_DAY);
@@ -113,10 +117,15 @@ public class AddEventFragment extends Fragment {
         long endTime = date.getTimeInMillis() + 900000; //Ajoute 15 minutes
         ContentResolver cr = getActivity().getContentResolver();
         ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.CALENDAR_ID, 3);
+        String title = "["+spinner.getSelectedItem().toString()+"] "+titleEditText.getText().toString();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            values.put(CalendarContract.Events.CALENDAR_ID, 3);
+        }else{
+            values.put(CalendarContract.Events.CALENDAR_ID, 1);
+        }
         values.put(CalendarContract.Events.DTSTART, date.getTimeInMillis());
         values.put(CalendarContract.Events.DTEND, endTime);
-        values.put(CalendarContract.Events.TITLE, titleEditText.getText().toString());
+        values.put(CalendarContract.Events.TITLE, title);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
         values.put(CalendarContract.Events.DESCRIPTION, descriptionEditText.getText().toString());
 
