@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,11 +29,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class AddEventFragment extends Fragment{
+public class AddEventFragment extends Fragment {
 
+    public final static int REQUEST_CALENDAR = 1;
     private Calendar date;
     private EditText titleEditText;
     private EditText descriptionEditText;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,28 +45,28 @@ public class AddEventFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        final View rootView = inflater.inflate(R.layout.fragment_add_event,container,false);
+        final View rootView = inflater.inflate(R.layout.fragment_add_event, container, false);
         titleEditText = rootView.findViewById(R.id.titleEvent);
         descriptionEditText = rootView.findViewById(R.id.descriptionEvent);
         //Get heure courante
-        date  = Calendar.getInstance();
+        date = Calendar.getInstance();
         int hour = date.get(Calendar.HOUR_OF_DAY);
         int minute = date.get(Calendar.MINUTE);
-        final SimpleDateFormat simpleTimeFormat  = new SimpleDateFormat("HH:mm");
+        final SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm");
 
         final TextView myTime = rootView.findViewById(R.id.time);
-        myTime.setText( simpleTimeFormat.format(date.getTime()));
-        final TimePickerDialog  timePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+        myTime.setText(simpleTimeFormat.format(date.getTime()));
+        final TimePickerDialog timePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                date.set(Calendar.HOUR,selectedHour);
-                date.set(Calendar.MINUTE,selectedMinute);
+                date.set(Calendar.HOUR, selectedHour);
+                date.set(Calendar.MINUTE, selectedMinute);
                 myTime.setText(simpleTimeFormat.format(date.getTime()));
             }
         }, hour, minute, true);
 
-        myTime.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+        myTime.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 timePicker.show();
             }
         });
@@ -75,22 +78,22 @@ public class AddEventFragment extends Fragment{
         final DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar date  = Calendar.getInstance();
-                date.set(year,month,dayOfMonth);
+                Calendar date = Calendar.getInstance();
+                date.set(year, month, dayOfMonth);
                 myDate.setText(simpleDateFormat.format(date.getTime()));
 
             }
-        },date.get(Calendar.YEAR),date.get(Calendar.MONTH),date.get(Calendar.DAY_OF_MONTH));
+        }, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
 
-        myDate.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+        myDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 datePicker.show();
             }
         });
         rootView.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               closeFragment();
+                closeFragment();
             }
         });
 
@@ -103,21 +106,26 @@ public class AddEventFragment extends Fragment{
         return rootView;
     }
 
-    public void saveEvent(){
+    public void saveEvent() {
         ContentResolver cr = getActivity().getContentResolver();
         ContentValues values = new ContentValues();
-        values.put(CalendarContract.Events.CALENDAR_ID,1234);
-        values.put(CalendarContract.Events.DTSTART,date.getTimeInMillis());
-        values.put(CalendarContract.Events.DTEND,date.getTimeInMillis());
-        values.put(CalendarContract.Events.TITLE,titleEditText.getText().toString());
+        values.put(CalendarContract.Events.CALENDAR_ID, 3);
+        values.put(CalendarContract.Events.DTSTART, date.getTimeInMillis());
+        values.put(CalendarContract.Events.DTEND, date.getTimeInMillis());
+        values.put(CalendarContract.Events.TITLE, titleEditText.getText().toString());
 
         values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
-        values.put(CalendarContract.Events.DESCRIPTION,descriptionEditText.getText().toString());
+        values.put(CalendarContract.Events.DESCRIPTION, descriptionEditText.getText().toString());
 
-        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values); // ZERO CHECK CAR LOL
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
+            Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+        }else{
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.WRITE_CALENDAR},
+                    REQUEST_CALENDAR);
+        }
 
-        long eventID = Long.parseLong(uri.getLastPathSegment());
-        Log.i("test",uri.toString());
         closeFragment();
     }
 
@@ -125,4 +133,5 @@ public class AddEventFragment extends Fragment{
         getFragmentManager().beginTransaction().remove(AddEventFragment.this).commit();
         getActivity().findViewById(R.id.navigation_home).performClick();//Hack api <25.0.3
     }
+
 }
