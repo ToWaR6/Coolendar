@@ -118,7 +118,12 @@ public class AddEventFragment extends Fragment {
         long endTime = date.getTimeInMillis() + 900000; //Ajoute 15 minutes
         ContentResolver cr = getActivity().getContentResolver();
         ContentValues values = new ContentValues();
-        String title = "["+spinner.getSelectedItem().toString()+"] "+titleEditText.getText().toString();
+        String title = titleEditText.getText().toString();
+        String selectedItem = spinner.getSelectedItem().toString();
+        String nothing = getActivity().getResources().getString(R.string.nothing);
+        Log.i("test",selectedItem + " == " + nothing);
+        if(!selectedItem.equals(nothing))
+            title = "["+spinner.getSelectedItem().toString()+"] "+titleEditText.getText().toString();
         values.put(CalendarContract.Events.CALENDAR_ID, 1);
 
         values.put(CalendarContract.Events.DTSTART, date.getTimeInMillis());
