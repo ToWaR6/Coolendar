@@ -9,7 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+
+import java.util.ArrayList;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -17,25 +20,43 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class NotificationFragment extends Fragment {
 
     private static int cptNotif = 0;
-    private Button buttonNotification;
     NotificationManager manager;
-    private Notification myNotication;
+    ArrayList<String> listTypeNotif;
+    CheckBox birthday, sport, meeting, health, others;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_notification,container,false);
+        this.manager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
 
-        manager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+        this.listTypeNotif = new ArrayList<String>();
 
-        this.buttonNotification = rootView.findViewById(R.id.buttonNotification);
-        this.buttonNotification.setOnClickListener(new View.OnClickListener() {
+        this.birthday = rootView.findViewById(R.id.birthdayBox);
+        this.sport = rootView.findViewById(R.id.sportBox);
+        this.meeting = rootView.findViewById(R.id.meetingBox);
+        this.health = rootView.findViewById(R.id.healthBox);
+        this.others = rootView.findViewById(R.id.othersBox);
+
+        CompoundButton.OnCheckedChangeListener onCheck = new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                createNotification("Yo tout le monde c'est...", "SQUEEEEEEEZZZZZZIIIIIIIIEEEEEE");
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    listTypeNotif.add(buttonView.getText().toString());
+                } else {
+                    listTypeNotif.remove(buttonView.getText().toString());
+                }
+                createNotification("List:"+listTypeNotif.size(), listTypeNotif.toString());
             }
-        });
+        };
+
+        birthday.setOnCheckedChangeListener(onCheck);
+        sport.setOnCheckedChangeListener(onCheck);
+        meeting.setOnCheckedChangeListener(onCheck);
+        health.setOnCheckedChangeListener(onCheck);
+        others.setOnCheckedChangeListener(onCheck);
+
         return rootView;
     }
 
@@ -47,18 +68,20 @@ public class NotificationFragment extends Fragment {
 
         Notification.Builder builder = new Notification.Builder(getContext());
 
-        builder.setAutoCancel(false);
-        builder.setTicker("this is ticker text");
+        builder.setAutoCancel(true);
+        builder.setTicker("OMFG ! THERE'S A NOTIF !!!!!!");
         builder.setContentTitle(title);
         builder.setContentText(text);
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentIntent(pendingIntent);
-        builder.setOngoing(true);
-        builder.setSubText("This is subtext...");   //API level 16
+        builder.setOngoing(false);
+        builder.setSubText("WHAT A BEAUTIFUL NOTIFICATION");
         builder.setNumber(100);
         builder.build();
 
-        myNotication = builder.build();
-        manager.notify(11, myNotication);
+        Notification myNotication = builder.build();
+        manager.notify(1, myNotication);
     }
+
+
 }
