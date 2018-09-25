@@ -11,4 +11,7 @@
     <string name="others">Autres</string>
     <string name="sport">Sport</string>
     <string name="note">Note</string>
+    <string name="search">Rechercher</string>
+    <string name="default_date">Non Renseigné</string>
+    <string name="nothing">Rien</string>
 </resources>

@@ -10,4 +10,7 @@
     <string name="others">Others</string>
     <string name="sport">Sport</string>
     <string name="note">Note</string>
+    <string name="search">search</string>
+    <string name="default_date">Not specified</string>
+    <string name="nothing">Nothing</string>
 </resources>
