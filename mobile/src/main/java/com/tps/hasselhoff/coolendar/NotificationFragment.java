@@ -31,7 +31,7 @@ public class NotificationFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_notification,container,false);
         this.manager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
 
-        this.listTypeNotif = new ArrayList<String>();
+        this.listTypeNotif = new ArrayList<>();
 
         this.birthday = rootView.findViewById(R.id.birthdayBox);
         this.sport = rootView.findViewById(R.id.sportBox);
@@ -77,10 +77,11 @@ public class NotificationFragment extends Fragment {
         builder.setOngoing(false);
         builder.setSubText("WHAT A BEAUTIFUL NOTIFICATION");
         builder.setNumber(100);
+        builder.setLocalOnly(false);
         builder.build();
 
         Notification myNotication = builder.build();
-        manager.notify(1, myNotication);
+        manager.notify(cptNotif++, myNotication);
     }
 
 

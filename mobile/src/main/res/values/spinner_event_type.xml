@@ -4,6 +4,7 @@
         <item>@string/birthday</item>
         <item>@string/meeting</item>
         <item>@string/sport</item>
+        <item>@string/health</item>
         <item>@string/others</item>
         <item>@string/nothing</item>
     </string-array>

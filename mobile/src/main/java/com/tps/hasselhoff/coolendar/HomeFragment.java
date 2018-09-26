@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,7 +51,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
         spinner = rootView.findViewById(R.id.spinner);
-        spinner.setSelection(4);
+        spinner.setSelection(getActivity().getResources().getStringArray(R.array.type_event_array).length);
         return rootView;
     }
 
@@ -61,7 +62,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 ((TextView)rootView.findViewById(R.id.date)).setText(getContext().getResources().getString(R.string.default_date));
                 break;
             case R.id.deleteSpinner:
-                spinner.setSelection(4,true);
+                spinner.setSelection(getActivity().getResources().getStringArray(R.array.type_event_array).length);
                 break;
             case R.id.searchButton:
                 searchEvents();
