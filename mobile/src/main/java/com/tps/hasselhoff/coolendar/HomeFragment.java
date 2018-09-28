@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,8 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -39,6 +35,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rootView.findViewById(R.id.searchButton).setOnClickListener(this);
         final TextView myDate = rootView.findViewById(R.id.date);
         date = Calendar.getInstance();
+
         ((TextView)rootView.findViewById(R.id.date)).setText(simpleDateFormat.format(date.getTime()));
         final DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -79,8 +76,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String typeEvent = "";
         if(!spinner.getSelectedItem().equals(nothing))
             typeEvent = "[" + spinner.getSelectedItem() + "]";
-        QueryCalendar task = new QueryCalendar(getContext(),date,typeEvent);
+        QueryCalendar task = new QueryCalendar(getActivity(),date,typeEvent);
         task.execute();
+
     }
+
 
 }
