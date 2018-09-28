@@ -36,7 +36,6 @@ import java.util.TimeZone;
 
 public class AddEventFragment extends Fragment {
 
-    public final static int REQUEST_CALENDAR = 1;
     private Calendar date;
     private EditText titleEditText;
     private EditText descriptionEditText;
@@ -66,7 +65,6 @@ public class AddEventFragment extends Fragment {
         final TimePickerDialog timePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                timePicker.getHour();
                 date.set(Calendar.HOUR_OF_DAY, selectedHour);
                 date.set(Calendar.MINUTE, selectedMinute);
                 myTime.setText(simpleTimeFormat.format(date.getTime()));
@@ -86,7 +84,6 @@ public class AddEventFragment extends Fragment {
         final DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar date = Calendar.getInstance();
                 date.set(year, month, dayOfMonth);
                 myDate.setText(simpleDateFormat.format(date.getTime()));
 
@@ -138,7 +135,7 @@ public class AddEventFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.WRITE_CALENDAR},
-                    REQUEST_CALENDAR);
+                    MainActivity.REQUEST_CALENDAR);
         }
 
         closeFragment();
