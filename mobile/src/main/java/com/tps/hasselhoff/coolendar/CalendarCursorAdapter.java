@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 public class CalendarCursorAdapter extends CursorAdapter {
 
@@ -33,7 +32,6 @@ public class CalendarCursorAdapter extends CursorAdapter {
         LinearLayout item = view.findViewById(R.id.item);
 
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone(cursor.getString(cursor.getColumnIndex(CalendarContract.Events.EVENT_TIMEZONE))));
         String title = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE));
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART)));

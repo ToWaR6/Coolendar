@@ -29,6 +29,7 @@ public class QueryCalendar extends AsyncTask<String, Void, Cursor>{
         String selection = "(";
         selection += "("+CalendarContract.Events.DTSTART + " >= " + date.getTimeInMillis() + ")";
         selection += " AND (" + CalendarContract.Events.TITLE + " LIKE '" + typeEvent+"%%%%')" ;
+        selection += " AND (" + CalendarContract.Events.CALENDAR_ID + " < 3 )";//Pour virer les trucs chelou genre semaine, et Noël
         selection +=")";
         return cr.query(uri,null,selection,null,null);
     }
