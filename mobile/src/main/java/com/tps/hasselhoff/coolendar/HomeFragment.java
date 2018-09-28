@@ -16,14 +16,18 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-    View rootView;
+    private View rootView;
     final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
-    Spinner spinner;
+    private Calendar date;
+    private final Calendar today = Calendar.getInstance();
+    private Spinner spinner;
+    private String[] arraySpinner;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,12 +38,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rootView.findViewById(R.id.deleteSpinner).setOnClickListener(this);
         rootView.findViewById(R.id.searchButton).setOnClickListener(this);
         final TextView myDate = rootView.findViewById(R.id.date);
-
-        Calendar date = Calendar.getInstance();
+        date = Calendar.getInstance();
+        ((TextView)rootView.findViewById(R.id.date)).setText(simpleDateFormat.format(date.getTime()));
         final DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar date = Calendar.getInstance();
                 date.set(year, month, dayOfMonth);
                 myDate.setText(simpleDateFormat.format(date.getTime()));
 
@@ -51,7 +54,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
         spinner = rootView.findViewById(R.id.spinner);
-        spinner.setSelection(getActivity().getResources().getStringArray(R.array.type_event_array).length);
+        arraySpinner = getActivity().getResources().getStringArray(R.array.type_event_array);
+        spinner.setSelection(arraySpinner.length-1);
         return rootView;
     }
 
@@ -59,10 +63,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.deleteDate:
-                ((TextView)rootView.findViewById(R.id.date)).setText(getContext().getResources().getString(R.string.default_date));
+                ((TextView)rootView.findViewById(R.id.date)).setText(simpleDateFormat.format(today.getTime()));
                 break;
             case R.id.deleteSpinner:
-                spinner.setSelection(getActivity().getResources().getStringArray(R.array.type_event_array).length);
+                spinner.setSelection(arraySpinner.length-1);
                 break;
             case R.id.searchButton:
                 searchEvents();
@@ -71,16 +75,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void searchEvents() {
-        String textDate = ((TextView) rootView.findViewById(R.id.date)).getText().toString();
-        Date date;
-        try {
-            date = simpleDateFormat.parse(textDate);
-        } catch (ParseException e) {
-            date = null;
-        }
-        if(date!=null){
-            Log.i("OK",simpleDateFormat.format(date));
-        }
+        String nothing = arraySpinner[arraySpinner.length-1];
+        String typeEvent = "";
+        if(!spinner.getSelectedItem().equals(nothing))
+            typeEvent = "[" + spinner.getSelectedItem() + "]";
+        QueryCalendar task = new QueryCalendar(getContext(),date,typeEvent);
+        task.execute();
     }
 
 }
