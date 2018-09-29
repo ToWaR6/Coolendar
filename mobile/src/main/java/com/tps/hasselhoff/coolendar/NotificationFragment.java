@@ -62,11 +62,11 @@ public class NotificationFragment extends Fragment {
 
     private final void createNotification(String title, String text){
 
-        Intent intent = new Intent("com.rj.notitfications.SECACTIVITY");
+        Intent intent = new Intent(getActivity(),MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 1, intent, 0);
 
-        Notification.Builder builder = new Notification.Builder(getContext());
+        Notification.Builder builder = new Notification.Builder(getActivity());
 
         builder.setAutoCancel(true);
         builder.setTicker("OMFG ! THERE'S A NOTIF !!!!!!");
@@ -78,10 +78,7 @@ public class NotificationFragment extends Fragment {
         builder.setSubText("WHAT A BEAUTIFUL NOTIFICATION");
         builder.setNumber(100);
         builder.setLocalOnly(false);
-        builder.build();
-
-        Notification myNotication = builder.build();
-        manager.notify(cptNotif++, myNotication);
+        manager.notify(cptNotif++,  builder.build());
     }
 
 
