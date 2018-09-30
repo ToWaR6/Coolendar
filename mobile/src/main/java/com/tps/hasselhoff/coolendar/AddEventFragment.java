@@ -4,22 +4,15 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -118,7 +110,6 @@ public class AddEventFragment extends Fragment {
         String title = titleEditText.getText().toString();
         String selectedItem = spinner.getSelectedItem().toString();
         String nothing = getActivity().getResources().getString(R.string.nothing);
-        Log.i("test",selectedItem + " == " + nothing);
         if(!selectedItem.equals(nothing))
             title = "["+spinner.getSelectedItem().toString()+"] "+titleEditText.getText().toString();
         values.put(CalendarContract.Events.CALENDAR_ID, 1);
