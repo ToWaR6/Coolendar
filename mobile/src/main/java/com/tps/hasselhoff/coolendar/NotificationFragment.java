@@ -40,12 +40,14 @@ public class NotificationFragment extends Fragment {
         CompoundButton.OnCheckedChangeListener onCheck = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ArrayList<String> res = Preferences.getStringArrayPref(getContext(),Preferences.PREFS_LIST);
                 if (isChecked) {
-                    sharedPreferences.edit().putBoolean(buttonView.getHint().toString(),true).apply();
-                } else {
+                    res.add(buttonView.getText().toString());
 
-                    sharedPreferences.edit().putBoolean(buttonView.getHint().toString(),false).apply();
+                } else {
+                    res.remove(buttonView.getText().toString());
                 }
+                Preferences.setStringArrayPref(getContext(),Preferences.PREFS_LIST,res);
             }
         };
 
@@ -61,22 +63,19 @@ public class NotificationFragment extends Fragment {
     private void initCheckBoxes(View rootView) {
         ArrayList<CheckBox> checkBoxes = new ArrayList<>();
         this.birthday = rootView.findViewById(R.id.birthdayBox);
-        this.birthday.setHint(Preferences.PREF_BIRTHDAY);
         checkBoxes.add(this.birthday);
         this.sport = rootView.findViewById(R.id.sportBox);
-        this.sport.setHint(Preferences.PREF_SPORT);
         checkBoxes.add(this.sport);
         this.meeting = rootView.findViewById(R.id.meetingBox);
-        this.meeting.setHint(Preferences.PREF_MEETING);
         checkBoxes.add(this.meeting);
         this.health = rootView.findViewById(R.id.healthBox);
-        this.health.setHint(Preferences.PREF_HEALTH);
         checkBoxes.add(this.health);
         this.others = rootView.findViewById(R.id.othersBox);
-        this.others.setHint(Preferences.PREF_OTHERS);
         checkBoxes.add(this.others);
+        ArrayList<String> prefs = Preferences.getStringArrayPref(getContext(),Preferences.PREFS_LIST);
         for(CheckBox c : checkBoxes) {
-            c.setChecked(sharedPreferences.getBoolean(c.getHint().toString(), false));
+            if(prefs.contains(c.getText().toString()))
+                c.setChecked(true);
         }
     }
 

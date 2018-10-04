@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -121,7 +124,18 @@ public class AddEventFragment extends Fragment {
         values.put(CalendarContract.Events.DESCRIPTION, descriptionEditText.getText().toString());
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED) {
-            cr.insert(CalendarContract.Events.CONTENT_URI, values);
+            Uri eventUri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+            long eventID = Long.parseLong(eventUri.getLastPathSegment());
+            String reminderUriString = "content://com.android.calendar/reminders";
+            ContentValues reminderValues = new ContentValues();
+            reminderValues.put(CalendarContract.Reminders.EVENT_ID, eventID);
+            Log.i("idAdd",Long.toString(eventID));
+            // Default value of the system. Minutes is a integer
+            reminderValues.put(CalendarContract.Reminders.MINUTES, 5);
+            // Alert Methods: Default(0), Alert(1), Email(2), SMS(3)
+            reminderValues.put(CalendarContract.Reminders.METHOD, 1);
+            cr.insert(Uri.parse(reminderUriString), reminderValues);
+            Toast.makeText(getActivity(), getContext().getResources().getString(R.string.event_add), Toast.LENGTH_SHORT).show();
         }else{
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,

@@ -21,6 +21,7 @@
             <intent-filter>
                 <data android:scheme="content"/> <!-- this was missing -->
                 <action android:name="android.intent.action.EVENT_REMINDER"/>
+                <data android:host="com.android.calendar"/>
             </intent-filter>
         </receiver>
     </application>
