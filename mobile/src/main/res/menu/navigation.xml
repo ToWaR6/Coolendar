@@ -7,7 +7,7 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_add_event"
         android:icon="@drawable/ic_event_note_black_24dp"
         android:title="@string/title_add_event" />
 
@@ -15,5 +15,10 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_notifications" />
+
+    <item
+        android:id="@+id/navigation_voice"
+        android:icon="@android:drawable/ic_btn_speak_now"
+        android:title="@string/title_voice" />
 
 </menu>

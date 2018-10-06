@@ -15,4 +15,5 @@
     <string name="default_date">Not specified</string>
     <string name="nothing">Nothing</string>
     <string name="event_add">Event Added To Your Calendar!</string>
+    <string name="title_voice">Voice</string>
 </resources>

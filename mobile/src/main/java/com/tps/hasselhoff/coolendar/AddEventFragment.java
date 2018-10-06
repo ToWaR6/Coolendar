@@ -2,17 +2,25 @@ package com.tps.hasselhoff.coolendar;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +35,10 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
+
+import static android.app.Activity.RESULT_OK;
 
 public class AddEventFragment extends Fragment {
 
@@ -103,6 +114,21 @@ public class AddEventFragment extends Fragment {
                 saveEvent();
             }
         });
+
+        rootView.findViewById(R.id.titleVoiceEvent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displaySpeechRecognizer(SPEECH_REQUEST_CODE_TITLE);
+            }
+        });
+
+        rootView.findViewById(R.id.descriptionVoiceEvent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displaySpeechRecognizer(SPEECH_REQUEST_CODE_DESC);
+            }
+        });
+
         return rootView;
     }
 
@@ -149,6 +175,70 @@ public class AddEventFragment extends Fragment {
     public void closeFragment(){
         getFragmentManager().beginTransaction().remove(AddEventFragment.this).commit();
         getActivity().findViewById(R.id.navigation_home).performClick();//Hack api <25.0.3
+    }
+
+
+
+
+
+    //voice recognition>
+
+    private static final int SPEECH_REQUEST_CODE_TITLE = 1;
+    private static final int SPEECH_REQUEST_CODE_DESC = 2;
+
+    // Create an intent that can start the Speech Recognizer activity
+    private void displaySpeechRecognizer(int code) {
+        try {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            // Start the activity, the intent will be populated with the speech text
+            startActivityForResult(intent, code);
+        } catch(ActivityNotFoundException e) {
+            String appPackageName = "com.google.android.googlequicksearchbox";
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            }
+        }
+    }
+
+    // This callback is invoked when the Speech Recognizer returns.
+    // This is where you process the intent and extract the speech text from the intent.
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String spokenText = results.get(0);
+
+            switch (requestCode){
+                case SPEECH_REQUEST_CODE_TITLE:
+                    titleEditText.setText(spokenText);
+                    break;
+                case SPEECH_REQUEST_CODE_DESC:
+                    descriptionEditText.setText(spokenText);
+                    break;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void showNotification(Context context, int event_id, String title, String text) {
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context,"default")
+                .setSmallIcon(R.drawable.ic_event_available_white_24dp)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
+                .setContentTitle(title) // title for notification
+                .setContentText(text)
+                .setSound(soundUri)// message for notification
+                .extend( new NotificationCompat.WearableExtender())//Display notification on wearable and Phone
+                .setAutoCancel(true); // clear notification after click
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(event_id, mBuilder.build());
     }
 
 }
