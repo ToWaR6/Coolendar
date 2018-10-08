@@ -9,11 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,7 +57,9 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
                 .setContentText(text)
                 .setSound(soundUri)// message for notification
                 .extend( new NotificationCompat.WearableExtender())//Display notification on wearable and Phone
-                .setAutoCancel(true); // clear notification after click
+                .setAutoCancel(true) // clear notification after click
+                .setLights(Color.rgb(61,0,41), 100000, 0)
+                .setVibrate(new long[] {200,30,200,30,200,30,500,30,500,30,500,30,200,30,200,30,200});
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(event_id, mBuilder.build());

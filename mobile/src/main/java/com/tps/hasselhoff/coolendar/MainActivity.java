@@ -1,13 +1,9 @@
 package com.tps.hasselhoff.coolendar;
 
 import android.Manifest;
-import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -16,11 +12,13 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    showFragment(new HomeFragment());
+                    showFragment(new SearchFragment());
                     return true;
                 case R.id.navigation_add_event:
                     showFragment(new AddEventFragment());
@@ -44,14 +42,17 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_notifications:
                     showFragment(new NotificationFragment());
                     return true;
-                case R.id.navigation_voice:
-                    displaySpeechRecognizer();
-                    return true;
+
             }
             return false;
         }
     };
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_action_bar, menu);
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,26 +67,26 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.WRITE_CALENDAR},
                     REQUEST_CALENDAR);
         }
-        showFragment(new HomeFragment());
+        showFragment(new SearchFragment());
     }
 
-    private void showFragment(Fragment fragment) {
+    private Fragment showFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content, fragment)
-                .commit();
+                .commitAllowingStateLoss();
+        return fragment;
     }
 
 
 
 
-    //voice recognition
-    // TODO : pouvoir utiliser la fonction 'displaySpeechRecognizer' et 'onActivityResult' de partout sans avoir à recopier la fonction
+    //voice recognitio
 
     private static final int SPEECH_REQUEST_CODE = 0;
 
     // Create an intent that can start the Speech Recognizer activity
-    private void displaySpeechRecognizer() {
+    public void displaySpeechRecognizer(MenuItem item) {
         try {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -109,26 +110,17 @@ public class MainActivity extends AppCompatActivity {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
-            showNotification(this, 0, "VOICE RECOGNITION", spokenText);
+            android.util.Log.i("Spoken",spokenText);
+            if (spokenText.toLowerCase().contains("évènement")) {
+                showFragment(new AddEventFragment());
+            } else if (spokenText.toLowerCase().contains("prochain")) {
+                SearchFragment fragment = (SearchFragment) showFragment(new SearchFragment());
+                fragment.searchEvents("", Calendar.getInstance());
+
+            }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
-    private void showNotification(Context context, int event_id, String title, String text) {
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context,"default")
-                .setSmallIcon(R.drawable.ic_event_available_white_24dp)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
-                .setContentTitle(title) // title for notification
-                .setContentText(text)
-                .setSound(soundUri)// message for notification
-                .extend( new NotificationCompat.WearableExtender())//Display notification on wearable and Phone
-                .setAutoCancel(true); // clear notification after click
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(event_id, mBuilder.build());
-    }
 
 
 }

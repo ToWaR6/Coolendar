@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class SearchFragment extends Fragment implements View.OnClickListener {
 
     private View rootView;
     final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE dd MMM yyyy");
@@ -66,16 +66,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 spinner.setSelection(arraySpinner.length-1);
                 break;
             case R.id.searchButton:
-                searchEvents();
+                String nothing = arraySpinner[arraySpinner.length-1];
+                String typeEvent = "";
+                if(!spinner.getSelectedItem().equals(nothing))
+                    typeEvent = "[" + spinner.getSelectedItem() + "]";
+                searchEvents(typeEvent, date);
                 break;
         }
     }
 
-    private void searchEvents() {
-        String nothing = arraySpinner[arraySpinner.length-1];
-        String typeEvent = "";
-        if(!spinner.getSelectedItem().equals(nothing))
-            typeEvent = "[" + spinner.getSelectedItem() + "]";
+    public void searchEvents(String typeEvent, Calendar date) {
         QueryCalendar task = new QueryCalendar(getActivity(),date,typeEvent);
         task.execute();
 

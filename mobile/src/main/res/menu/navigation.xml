@@ -16,9 +16,5 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_notifications" />
 
-    <item
-        android:id="@+id/navigation_voice"
-        android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="@string/title_voice" />
 
 </menu>
