@@ -122,12 +122,6 @@ public class AddEventFragment extends Fragment {
             }
         });
 
-        rootView.findViewById(R.id.descriptionVoiceEvent).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displaySpeechRecognizer(SPEECH_REQUEST_CODE_DESC);
-            }
-        });
 
         return rootView;
     }
