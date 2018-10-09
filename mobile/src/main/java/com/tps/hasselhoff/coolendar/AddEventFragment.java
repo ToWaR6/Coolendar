@@ -118,7 +118,7 @@ public class AddEventFragment extends Fragment {
         rootView.findViewById(R.id.titleVoiceEvent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displaySpeechRecognizer(SPEECH_REQUEST_CODE_TITLE);
+                displaySpeechRecognizer();
             }
         });
 
@@ -149,7 +149,6 @@ public class AddEventFragment extends Fragment {
             String reminderUriString = "content://com.android.calendar/reminders";
             ContentValues reminderValues = new ContentValues();
             reminderValues.put(CalendarContract.Reminders.EVENT_ID, eventID);
-            Log.i("idAdd",Long.toString(eventID));
             // Default value of the system. Minutes is a integer
             reminderValues.put(CalendarContract.Reminders.MINUTES, 5);
             // Alert Methods: Default(0), Alert(1), Email(2), SMS(3)
@@ -178,15 +177,14 @@ public class AddEventFragment extends Fragment {
     //voice recognition>
 
     private static final int SPEECH_REQUEST_CODE_TITLE = 1;
-    private static final int SPEECH_REQUEST_CODE_DESC = 2;
 
     // Create an intent that can start the Speech Recognizer activity
-    private void displaySpeechRecognizer(int code) {
+    private void displaySpeechRecognizer() {
         try {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             // Start the activity, the intent will be populated with the speech text
-            startActivityForResult(intent, code);
+            startActivityForResult(intent, SPEECH_REQUEST_CODE_TITLE);
         } catch(ActivityNotFoundException e) {
             String appPackageName = "com.google.android.googlequicksearchbox";
             try {
@@ -201,38 +199,12 @@ public class AddEventFragment extends Fragment {
     // This is where you process the intent and extract the speech text from the intent.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        if (requestCode == SPEECH_REQUEST_CODE_TITLE && resultCode == RESULT_OK) {
             List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
-
-            switch (requestCode){
-                case SPEECH_REQUEST_CODE_TITLE:
-                    titleEditText.setText(spokenText);
-                    break;
-                case SPEECH_REQUEST_CODE_DESC:
-                    descriptionEditText.setText(spokenText);
-                    break;
+            titleEditText.setText(spokenText);
             }
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void showNotification(Context context, int event_id, String title, String text) {
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context,"default")
-                .setSmallIcon(R.drawable.ic_event_available_white_24dp)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
-                .setContentTitle(title) // title for notification
-                .setContentText(text)
-                .setSound(soundUri)// message for notification
-                .extend( new NotificationCompat.WearableExtender())//Display notification on wearable and Phone
-                .setAutoCancel(true); // clear notification after click
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(event_id, mBuilder.build());
     }
 
 }

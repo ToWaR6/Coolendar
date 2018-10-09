@@ -17,4 +17,6 @@
     <string name="nothing">Rien</string>
     <string name="event_add">Evenement ajouté au calendrier</string>
     <string name="title_voice">Voix</string>
+    <string name="add">ajouter</string>
+    <string name="next">prochain</string>
 </resources>

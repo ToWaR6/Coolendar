@@ -16,4 +16,6 @@
     <string name="nothing">Nothing</string>
     <string name="event_add">Event Added To Your Calendar!</string>
     <string name="title_voice">Voice</string>
+    <string name="add">add</string>
+    <string name="next">next</string>
 </resources>

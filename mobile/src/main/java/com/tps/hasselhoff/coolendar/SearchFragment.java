@@ -24,6 +24,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private final Calendar today = Calendar.getInstance();
     private Spinner spinner;
     private String[] arraySpinner;
+    private boolean searching;
+
+    public SearchFragment withSearch(){
+        this.searching = true;
+        return this;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,6 +60,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         spinner = rootView.findViewById(R.id.spinner);
         arraySpinner = getActivity().getResources().getStringArray(R.array.type_event_array);
         spinner.setSelection(arraySpinner.length-1);
+        if(searching)
+            searchEvents();
         return rootView;
     }
 
@@ -66,16 +75,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 spinner.setSelection(arraySpinner.length-1);
                 break;
             case R.id.searchButton:
-                String nothing = arraySpinner[arraySpinner.length-1];
-                String typeEvent = "";
-                if(!spinner.getSelectedItem().equals(nothing))
-                    typeEvent = "[" + spinner.getSelectedItem() + "]";
-                searchEvents(typeEvent, date);
+                searchEvents();
                 break;
         }
     }
 
-    public void searchEvents(String typeEvent, Calendar date) {
+    private void searchEvents() {
+        String nothing = arraySpinner[arraySpinner.length-1];
+        String typeEvent = "";
+        if(!spinner.getSelectedItem().equals(nothing))
+            typeEvent = "[" + spinner.getSelectedItem() + "]";
         QueryCalendar task = new QueryCalendar(getActivity(),date,typeEvent);
         task.execute();
 

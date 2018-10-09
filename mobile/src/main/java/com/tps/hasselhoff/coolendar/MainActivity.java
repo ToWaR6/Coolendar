@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -110,15 +111,14 @@ public class MainActivity extends AppCompatActivity {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
-            android.util.Log.i("Spoken",spokenText);
-            if (spokenText.toLowerCase().contains("évènement")) {
+            if (spokenText.toLowerCase().contains(this.getResources().getString(R.string.add))) {
                 showFragment(new AddEventFragment());
-            } else if (spokenText.toLowerCase().contains("prochain")) {
-                SearchFragment fragment = (SearchFragment) showFragment(new SearchFragment());
-                fragment.searchEvents("", Calendar.getInstance());
+            } else if (spokenText.toLowerCase().contains(this.getResources().getString(R.string.next))) {
+               showFragment(new SearchFragment().withSearch());
 
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

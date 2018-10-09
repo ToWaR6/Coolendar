@@ -49,7 +49,6 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
 
     private void showNotification(Context context,int event_id,String title, String text) {
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
         NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context,"default")
                 .setSmallIcon(R.drawable.ic_event_available_white_24dp)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
