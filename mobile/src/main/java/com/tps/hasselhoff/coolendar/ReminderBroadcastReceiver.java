@@ -2,6 +2,7 @@ package com.tps.hasselhoff.coolendar;
 
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -49,16 +50,32 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
 
     private void showNotification(Context context,int event_id,String title, String text) {
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.WearableExtender wearNotification =  new NotificationCompat.WearableExtender();
+        if(title.contains(context.getResources().getString(R.string.sport))) {
+
+            Intent messageIntent = new Intent(context,MessageSenderIntentService.class);
+            PendingIntent messagePendingIntent =
+                    PendingIntent.getActivity(context, 0, messageIntent, 0);
+
+            NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.ic_directions_run_white_24dp, context.getResources().getString(R.string.go), messagePendingIntent);
+            NotificationCompat.Action
+                    .WearableExtender actionExtender =
+                    new NotificationCompat.Action.WearableExtender()
+                            .setHintLaunchesActivity(true)
+                            .setHintDisplayActionInline(true);
+            wearNotification.addAction(new NotificationCompat.Action.Builder(action).extend(actionExtender).build());
+        }
         NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context,"default")
                 .setSmallIcon(R.drawable.ic_event_available_white_24dp)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
                 .setContentTitle(title) // title for notification
                 .setContentText(text)
                 .setSound(soundUri)// message for notification
-                .extend( new NotificationCompat.WearableExtender())//Display notification on wearable and Phone
+                .extend(wearNotification)//Display notification on wearable and Phone
                 .setAutoCancel(true) // clear notification after click
                 .setLights(Color.rgb(61,0,41), 100000, 0)
                 .setVibrate(new long[] {200,30,200,30,200,30,500,30,500,30,500,30,200,30,200,30,200});
+
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(event_id, mBuilder.build());

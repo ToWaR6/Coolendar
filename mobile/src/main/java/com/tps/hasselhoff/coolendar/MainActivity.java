@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +19,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.List;
@@ -112,10 +116,15 @@ public class MainActivity extends AppCompatActivity {
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
             if (spokenText.toLowerCase().contains(this.getResources().getString(R.string.add))) {
+                ((BottomNavigationView) findViewById(R.id.navigation)).setSelectedItemId(R.id.navigation_add_event);
                 showFragment(new AddEventFragment());
             } else if (spokenText.toLowerCase().contains(this.getResources().getString(R.string.next))) {
+               ((BottomNavigationView) findViewById(R.id.navigation)).setSelectedItemId(R.id.navigation_home);
                showFragment(new SearchFragment().withSearch());
 
+            }else if(spokenText.toLowerCase().contains(getResources().getString(R.string.weather))){
+
+                Toast.makeText(this, this.getResources().getString(R.string.weather_app), Toast.LENGTH_SHORT).show();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

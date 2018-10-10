@@ -19,4 +19,7 @@
     <string name="title_voice">Voix</string>
     <string name="add">ajouter</string>
     <string name="next">prochain</string>
+    <string name="weather">météo</string>
+    <string name="go">Allons-y ! </string>
+    <string name="weather_app">Je ne suis pas une application météo</string>
 </resources>
