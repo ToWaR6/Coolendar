@@ -15,6 +15,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -48,14 +49,18 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
        }
     }
 
-    private void showNotification(Context context,int event_id,String title, String text) {
+    public void showNotification(Context context,int event_id,String title, String text) {
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.WearableExtender wearNotification =  new NotificationCompat.WearableExtender();
         if(title.contains(context.getResources().getString(R.string.sport))) {
 
             Intent messageIntent = new Intent(context,MessageSenderIntentService.class);
+            messageIntent.putExtra(CalendarContract.Events._ID,event_id)
+                    .putExtra(CalendarContract.Events.TITLE,title);
+            messageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent messagePendingIntent =
-                    PendingIntent.getActivity(context, 0, messageIntent, 0);
+                    PendingIntent.getService(context, 0, messageIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             NotificationCompat.Action action = new NotificationCompat.Action(R.drawable.ic_directions_run_white_24dp, context.getResources().getString(R.string.go), messagePendingIntent);
             NotificationCompat.Action

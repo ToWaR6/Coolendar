@@ -92,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
 
     // Create an intent that can start the Speech Recognizer activity
     public void displaySpeechRecognizer(MenuItem item) {
+        //todo Supprimer ici après test
+        ReminderBroadcastReceiver rb = new ReminderBroadcastReceiver();
+        rb.showNotification(this,12,"[Sport]TEST","CECI EST UN TEST");
+        //todo fin de la suppression
         try {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
