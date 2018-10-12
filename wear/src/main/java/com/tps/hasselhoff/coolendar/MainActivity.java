@@ -7,11 +7,9 @@ import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
+
 
 public class MainActivity extends WearableActivity {
-
-    private TextView mTextView;
     private Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +21,13 @@ public class MainActivity extends WearableActivity {
         if(title != null)
             ((EditText)findViewById(R.id.title)).setText(title.replace("[Sport]",""));
         setAmbientEnabled();
+
     }
 
     public void startSport(View button){
         String footing = getResources().getString(R.string.footing);
-        String sportChoosen = spinner.getSelectedItem().toString();
-        if(sportChoosen.equals(footing)){
+        String sportChosen = spinner.getSelectedItem().toString();
+        if(sportChosen.equals(footing)){
             showActivity(FootingActivity.class);
         }
     }
@@ -37,6 +36,5 @@ public class MainActivity extends WearableActivity {
         Intent intent = new Intent(this, activity);
         startActivity(intent);
     }
-
 
 }
