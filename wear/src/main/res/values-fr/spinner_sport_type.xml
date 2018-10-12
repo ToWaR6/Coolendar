@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type_sport_array">
+        <item>@string/footing</item>
+        <item>@string/gym</item>
+    </string-array>
+</resources>
+<!--Nothing Doit absolument rester à la fin de la liste -->
