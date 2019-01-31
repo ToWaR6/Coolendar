@@ -15,7 +15,7 @@ public class FootingActivity extends WearableActivity  implements SensorEventLis
     private TextView heartRate;
     private SensorManager sensorManager;
     private Sensor sensor;
-    private int avgHeartRate,sensorChangedCount = 0;
+    private int avgHeartRate,allHearRate,sensorChangedCount = 0;
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,9 @@ public class FootingActivity extends WearableActivity  implements SensorEventLis
     @Override
     public void onSensorChanged(SensorEvent event) {
         sensorChangedCount++;
-        avgHeartRate = (avgHeartRate + (int)event.values[0])/0;
+        allHearRate += (int)event.values[0];
+
+        avgHeartRate = (allHearRate + (int)event.values[0])/sensorChangedCount;
         String average = getResources().getString(R.string.average);
         heartRate.setText(String.format("%.0f", event.values[0]) + average + avgHeartRate );
     }
