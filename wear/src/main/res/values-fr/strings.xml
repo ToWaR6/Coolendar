@@ -8,4 +8,5 @@
     <string name="go">Go !</string>
     <string name="stop">Stop !</string>
     <string name="average">Moy : </string>
+    <string name="access_denied">Vous ne pouvez pas accèder sans GPS</string>
 </resources>

@@ -7,4 +7,5 @@
     <string name="go">Go !</string>
     <string name="stop">Stop !</string>
     <string name="average">Avg : </string>
+    <string name="access_denied">Access denied</string>
 </resources>
