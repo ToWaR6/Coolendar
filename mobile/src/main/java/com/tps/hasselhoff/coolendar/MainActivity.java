@@ -7,23 +7,18 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -92,10 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Create an intent that can start the Speech Recognizer activity
     public void displaySpeechRecognizer(MenuItem item) {
-        //todo Supprimer ici après test
-        ReminderBroadcastReceiver rb = new ReminderBroadcastReceiver();
-        rb.showNotification(this,12,"[Sport]TEST","CECI EST UN TEST");
-        //todo fin de la suppression
+        
         try {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
