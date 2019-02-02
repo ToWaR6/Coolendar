@@ -9,6 +9,7 @@ import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FootingActivity extends WearableActivity  implements SensorEventListener {
     private Chronometer simpleChronometer;
@@ -26,6 +27,8 @@ public class FootingActivity extends WearableActivity  implements SensorEventLis
         setAmbientEnabled();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        if(sensor==null)
+            Toast.makeText(this, "La montre ne possède pas de capteur cardiaque", Toast.LENGTH_SHORT).show();
     }
 
     public void stopSport(View button){
